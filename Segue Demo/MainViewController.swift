@@ -22,6 +22,12 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         super.didReceiveMemoryWarning()
         // Dispose of any resources that can be recreated.
     }
+    
+    @IBAction func unwindToMainViewConraewfwdsoller(segue: UIStoryboardSegue) {
+    
+    }
+
+
 
     /// Opens the user's library, allowing them to choose a photo
     ///
@@ -36,6 +42,9 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         }
     }
     
+    
+    
+    
     /// Sets the Image View's image to the one chosen by the user
     ///
     /// - Parameters:
@@ -46,39 +55,21 @@ class MainViewController: UIViewController, UIImagePickerControllerDelegate, UIN
         previewImageView.image = selectedImage
         dismiss(animated: true, completion: nil)
     }
-
     
-    /// Send any data to other MVC's before this MVC disappears
-    ///
-    /// - Parameters:
-    ///   - segue: the segue between this MVC and the MVC we are about to go to
-    ///   - sender: the button/table view/ etc. that instigated this segue
-    ///             In this app, it is either the "View Photo" or "View Name" button
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "goToPhoto" {
+            if let dest = segue.destination as? PhotoViewController {
+                dest.imageToDisplay = previewImageView.image
+            }
+        }
+        if segue.identifier == "goToText" {
+            if let dest = segue.destination as? TextViewController {
+                dest.stringToDisplay = nameTextField.text ?? ""
+            }
+        }
         
-        // If the user tapped the "View Photo" button, this condition is true
-        if segue.identifier == "mainToPhotoView" {
-            // try to cast the destination View Controller as a PhotoViewController
-            if let destinationVC = segue.destination as? PhotoViewController {
-                if let userImage = previewImageView.image {
-                    // imageToDisplay is a instance variable I defined in PhotoViewController
-                    destinationVC.imageToDisplay = userImage
-                }
-            }
-        }
-            
-        // If the user tapped the "View Photo" button, this condition is true
-        else if segue.identifier == "mainToTextView" {
-            // try to cast the destination View Controller as a TextViewController
-            if let destinationVC = segue.destination as? TextViewController {
-                if let username = nameTextField.text {
-                    // stringToDisplay is a instance variable I defined in TextViewController
-                    if username != "" {
-                        destinationVC.stringToDisplay = username
-                    }
-                }
-            }
-        }
     }
+    
 }
 
